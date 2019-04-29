@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#一键删除所有虚拟机
+img_dir="/var/lib/libvirt/images"
+
+vir_a=`virsh list --all | awk '$2~/^a[0-9]+/{print $2}'`
+alen=`virsh list --all | awk '$2~/^a[0-9]+/{print $2}' | wc -l`
+
+vir_rh7=`virsh list --all | awk '$2~/^rh7_node/{print $2}'`
+rh7_len=`virsh list --all | awk '$2~/^rh7_node/{print $2}' | wc -l`
+
+virs="$vir_a $vir_rh7 classroom server desktop"
+for i in $virs
+do
+	virsh shutdown $i  &>  /dev/null
+	virsh undefine $i  &>  /dev/null
+done
+
+del_vir (){
+
+	for a in `seq $alen`
+	do
+		mv $img_dir/${a}.img $img_dir/imgs/
+	done
+	
+	for node in `seq $rh7_len`
+	do
+		mv $img_dir/${node}.img $img_dir/imgs/ 
+	done
+
+}
+
+if [ -d $img_dir/imgs ];then
+	del_vir
+else
+	mkdir $img_dir/imgs
+	del_vir
+fi

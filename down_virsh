@@ -1,0 +1,9 @@
+#!/bin/bash
+#一键关闭所有虚拟机
+vir_a=`virsh list --all | awk '$2~/^a[0-9]+/{print $2}'`
+ir_rh7=`virsh list --all | awk '$2~/^rh7_node/{print $2}'`
+virs="$vir_a $vir_rh7"
+for i in $virs
+do
+	virsh shutdown $i  &>  /dev/null
+done

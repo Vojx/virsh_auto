@@ -19,7 +19,7 @@ ip_part4=`echo $ip | awk -F. '{print $4}'`
 
 #定义yum源
 gateway=`echo $ip | sed -r 's/(.*)\.(.*)\.(.*)\.(.*)/\1.\2.\3.254/'`
-yum_resource="http://$gateway/rhel7"
+yum_resource="ftp://$gateway/rhel7"
 
 
 add_ip (){
